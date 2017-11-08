@@ -16,7 +16,7 @@ echo "              ||--|| *    "
 echo -e "Download video from m3u8 address using ffmpeg\n"
 
 if [[ -z $1 ]]; then
-	echo -e "usage: $0 M3U8_ADDRESS\n";
+	echo -e "usage: m3u8-download M3U8_ADDRESS\n";
 	exit;
 fi
 
