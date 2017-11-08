@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+
+# Title: m3u8-download
+# Description: This script will download video from m3u8 address
+# Author: William Chanrico
+# Date: 08-Nov-2017
+
+echo " _____________________    "
+echo "/ hello, who's there? \\  "
+echo "\\ william said hi...  /  "
+echo " ---------------------    "
+echo "       \\   ,__,          "
+echo "        \\  (..)____      "
+echo "           (__)    )\     "
+echo "              ||--|| *    "
+echo -e "Download video from m3u8 address using ffmpeg\n"
+
+if [[ -z $1 ]]; then
+	echo -e "usage: $0 M3U8_ADDRESS\n";
+	exit;
+fi
+
+m3u8_filename=$(basename "$1")
+output_filename="${m3u8_filename%.*}"
+
+echo -e "Downloading $(tput bold)$m3u8_filename$(tput sgr0) as $(tput bold)$output_filename.mp4$(tput sgr0)\n"
+
+if [ -e "$output_filename.mp4" ]; then
+	read -p "Overwrite $(tput bold)$output_filename.mp4$(tput sgr0)? [y/N] " input
+
+	[[ ! $input =~ [yY] ]] && exit;
+fi
+
+
+counter=0
+
+# Parsing ffmpeg stderr and stdout for cleaner terminal output
+ffmpeg -y -hide_banner -loglevel info -i $1 -c copy -bsf:a aac_adtstoasc $output_filename.mp4 2>&1 | while read -r OUTPUT || [ -n "$OUTPUT" ]; do
+
+	if [ $counter = 4 ]; then
+		while [[ $counter -gt 0 ]]; do
+			tput cuu1;
+			tput el;
+			let counter=counter-1;
+		done
+	fi
+
+	echo "${OUTPUT:0:$(tput cols)}"
+	let counter=counter+1
+done
+
+echo -e "Done\n"
