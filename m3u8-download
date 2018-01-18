@@ -16,12 +16,17 @@ echo "              ||--|| *    "
 echo -e "Download video from m3u8 address using ffmpeg\n"
 
 if [[ -z $1 ]]; then
-	echo -e "usage: m3u8-download M3U8_ADDRESS\n";
+	echo -e "usage: m3u8-download M3U8_ADDRESS {OUTPUT_FILENAME}\n";
 	exit;
 fi
 
 m3u8_filename=$(basename "$1")
-output_filename="${m3u8_filename%.*}"
+
+if [[ -z $2 ]]; then
+	output_filename="${m3u8_filename%.*}"
+else
+	output_filename="$2"
+fi
 
 echo -e "Downloading $(tput bold)$m3u8_filename$(tput sgr0) as $(tput bold)$output_filename.mp4$(tput sgr0)\n"
 
