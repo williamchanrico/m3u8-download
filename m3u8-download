@@ -28,7 +28,7 @@ fi
 
 clean_output_counter=0
 
-ffmpeg -y -hide_banner -loglevel info -i "$1" -c copy -bsf:a aac_adtstoasc "$output_filename" 2>&1 \
+ffmpeg -y -hide_banner -loglevel info -i "$m3u8_address" -c copy -bsf:a aac_adtstoasc "$output_filename" 2>&1 \
 	| while read -r OUTPUT || [ -n "$OUTPUT" ]; do
 
 	# Clean stdout and stderr every 4th line
